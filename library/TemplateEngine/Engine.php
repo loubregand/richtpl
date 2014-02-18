@@ -45,8 +45,10 @@ class Engine
 	public function parseTemplate()
 	{
 		$tokens = preg_split(
+			# Aggiungiamo la rimozione delle righe per i commenti
+			'/(?|(?:\t*\{([\w#][^}\n]+?)\}\n)|(?:\{([^}\n]+?)\}))/',
 			# se un tag non sta su una linea solo non lo consideriamo
-			'/(?|(?:\t*\{(\w[^}\n]+?)\}\n)|(?:\{([^}\n]+?)\}))/',
+			// '/(?|(?:\t*\{(\w[^}\n]+?)\}\n)|(?:\{([^}\n]+?)\}))/',
 			# con eliminazione degli a capo e tabulazioni solo per i tag che stanno da soli su una linea e iniziano con una word e non con un simbolo (es =)
 			// '/(?|(?:\t*\{(\w[^}]+?)\}\n)|(?:\{([^}]+?)\}))/',
 			# con eliminazione degli a capo e tabulazioni

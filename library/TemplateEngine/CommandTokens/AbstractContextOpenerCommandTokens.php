@@ -30,7 +30,13 @@ abstract class AbstractContextOpenerCommandTokens extends AbstractCommandTokens
 		{
 			$token = $stack->shiftToken();
 			
-			if( $token instanceof AbstractContextOpenerCommandTokens )
+			if( ( $_tmpContext = $this->_checkToken( $token ) ) instanceof \TemplateEngine\Context )
+			{
+				$context = $_tmpContext;
+				$context->setParent($parentContext);
+			}
+			elseif( $_tmpContext );
+			elseif( $token instanceof AbstractContextOpenerCommandTokens )
 			{
 				$token->prepare($stack, $context);
 				$context->addToken($token);
@@ -45,12 +51,6 @@ abstract class AbstractContextOpenerCommandTokens extends AbstractCommandTokens
 				$this->_elseContext = $context = new \TemplateEngine\Context();
 				$context->setParent($parentContext);
 			}
-			elseif( ( $_tmpContext = $this->_checkToken( $token ) ) instanceof \TemplateEngine\Context )
-			{
-				$context = $_tmpContext;
-				$context->setParent($parentContext);
-			}
-			elseif( $_tmpContext );
 			else
 			{
 				$context->addToken($token);

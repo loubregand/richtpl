@@ -27,6 +27,10 @@ class CommandTokenFactory
 		
 		$types['Variable'] = '= (?<var>%variable%)';
 		
+		$types['Comment'] = '#.*#';
+		$types['CommentOpen'] = '#.*';
+		$types['CommentClose'] = '.*#';
+		
 		foreach( $types as &$t )
 		{
 			$t = preg_replace( '/  /', '\s+', $t);
