@@ -43,24 +43,6 @@ class Context
 		return $render;
 	}
 	
-	public function getParentBind($k)
-	{
-		if( array_key_exists( $k, $this->_bindings ) )
-		{
-			return $this->_bindings[$k];
-		}
-		elseif( null !== $this->_parent )
-		{
-			return $this->_parent->getParentBind($k);
-		}
-		else
-		{
-			// throw new \Exception( "Binding `$k` was not defined." );
-			
-			return null;
-		}
-	}
-	
 	public function getBind($k)
 	{
 		$askedFor = $k;
@@ -76,7 +58,7 @@ class Context
 			}
 			else
 			{
-				throw new \Exception( "Pipe `$pipe` is not callable (Asked: $k)." );
+				throw new \Exception( "Pipe variable `$pipe` is not callable (Asked: $k)." );
 			}
 		}
 		
@@ -121,9 +103,13 @@ class Context
 			{
 				$return = $return[$k];
 			}
-			elseif( is_object( $k ) && isset( $return->$k ) )
+			elseif( is_object( $return ) && isset( $return->$k ) )
 			{
 				$return = $return->$k;
+			}
+			elseif( is_object( $return ) && method_exists( $return, $k ) )
+			{
+				$return = $return->$k();
 			}
 			else
 			{
@@ -134,5 +120,23 @@ class Context
 		}
 		
 		return $return;
+	}
+	
+	public function getParentBind($k)
+	{
+		if( array_key_exists( $k, $this->_bindings ) )
+		{
+			return $this->_bindings[$k];
+		}
+		elseif( null !== $this->_parent )
+		{
+			return $this->_parent->getParentBind($k);
+		}
+		else
+		{
+			// throw new \Exception( "Binding `$k` was not defined." );
+			
+			return null;
+		}
 	}
 }	
