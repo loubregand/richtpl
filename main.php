@@ -110,12 +110,17 @@ try
 				'date_of_publication' => '2013-01-09T00:00:01',
 			],
 		],
+		'numbers' => range(1,3),
 		// 'rows' => [],
 		'number_of_books' => 20,
 		'hasPrevious' => 0,
 		'prevLink' => 'http://next/page',
 		'hasNext'     => 1,
 		'nextLink' => 'http://next/page',
+		'dump' => function ($v)
+		{
+			return var_export( $v, 1 );
+		},
 		'str' => [
 			'upper'   => 'strtoupper',
 			'lower'   => 'strtolower',
@@ -126,6 +131,11 @@ try
 			'castBoolean' => function ($v){return (bool)$v;},
 		],
 		'array' => [
+			'iterate'    => function ($v)
+			{
+				return new \Utils\TemplateIterator($v);
+			},
+			'keys'       => 'array_keys',
 			'count'      => 'count',
 			'group_by_3' => function ($array)
 			{

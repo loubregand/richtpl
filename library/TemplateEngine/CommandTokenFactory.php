@@ -16,6 +16,8 @@ class CommandTokenFactory
 		$expressions = [];
 		$expressions['variable'] = '\w+(?:[.|]\w+)*';
 		
+		$types['Set'] = 'set  (?<var>%variable%)  as  (?<as>\w+)';
+		
 		$types['ForLoop'] = 'for  (?<var>%variable%)(?:  as  (?<as1>\w+) ( , (?<as2>\w+))?)?';
 		$types['EndForLoop'] = 'endfor(?:  (?<var>%variable%))?';
 		

@@ -13,13 +13,14 @@
 	</head>
 	<body>
 		<table>
-			{# Questo è un commento #}
+			{# This is a comment #}
 			<tr><td colspan="{=rows.0|array.count}" class="title">{=title|str.upper}</td></tr>
 			{if rows}
 				<tr>
-					{for rows.0 as key,cell}
+					{set rows.0|array.keys as headers}
+					{for headers as key}
 						<th>{=key}</th>
-					{endfor rows.0}
+					{endfor headers}
 				</tr>
 				{for rows as row}
 				<tr>
@@ -29,9 +30,9 @@
 				</tr>
 				{endfor}
 			{endif}
-			{# start comment}
+			{# start of a range comment}
 			This will not be printed
-			{end of comment #}
+			{here ends the range comment #}
 			<tr>
 				<td colspan="{=rows.0|array.count}">Showing {=rows|array.count} of {=number_of_books} books</td>
 			</tr>

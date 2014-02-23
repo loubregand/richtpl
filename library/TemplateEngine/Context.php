@@ -31,6 +31,13 @@ class Context
 		return $this;
 	}
 	
+	public function setBind($k, $v)
+	{
+		$this->_bindings[$k] = $v;
+		
+		return $this;
+	}
+	
 	public function render()
 	{
 		$render = '';
