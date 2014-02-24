@@ -30,11 +30,13 @@ abstract class AbstractContextOpenerCommandTokens extends AbstractCommandTokens
 		{
 			$token = $stack->shiftToken();
 			
+			// Implemented to enable elseif tokens
 			if( ( $_tmpContext = $this->_checkToken( $token ) ) instanceof \TemplateEngine\Context )
 			{
 				$context = $_tmpContext;
 				$context->setParent($parentContext);
 			}
+			// Implemented to enable range comments
 			elseif( $_tmpContext );
 			elseif( $token instanceof AbstractContextOpenerCommandTokens )
 			{

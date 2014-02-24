@@ -109,6 +109,27 @@ try
 				'publisher' => 'Hoeply',
 				'date_of_publication' => '2013-01-09T00:00:01',
 			],
+			[
+				'title'     => "Erlang",
+				'pages'     => 945,
+				'author'    => "Muddy Waters",
+				'publisher' => 'Wisconsin',
+				'date_of_publication' => '2011-11-03T01:00:00',
+			],
+			[
+				'title'     => "Php everywhere",
+				'pages'     => 567,
+				'author'    => "Alan Sorrenti",
+				'publisher' => 'California',
+				'date_of_publication' => '2013-01-09T00:00:01',
+			],
+			[
+				'title'     => "Scala by examples",
+				'pages'     => 500,
+				'author'    => "Stephen King",
+				'publisher' => 'Hoeply',
+				'date_of_publication' => '2013-01-09T00:00:01',
+			],
 		],
 		'numbers' => range(1,3),
 		// 'rows' => [],
@@ -117,6 +138,7 @@ try
 		'prevLink' => 'http://next/page',
 		'hasNext'     => 1,
 		'nextLink' => 'http://next/page',
+		'tablePartial' => new \TemplateEngine\Engine(file_get_contents('books_multicol_table_partial.tpl')),
 		'dump' => function ($v)
 		{
 			return var_export( $v, 1 );
@@ -131,12 +153,29 @@ try
 			'castBoolean' => function ($v){return (bool)$v;},
 		],
 		'array' => [
-			'iterate'    => function ($v)
+			'range' => new \Utils\Range(),
+			'iterate' => function ($v)
 			{
 				return new \Utils\TemplateIterator($v);
 			},
-			'keys'       => 'array_keys',
-			'count'      => 'count',
+			'keys' => function ($v)
+			{
+				if( ! is_array($v) )
+				{
+					throw new \Exception( "Input to this filter must be an array." );
+				}
+				
+				return array_keys($v);
+			},
+			'count' => function ($v)
+			{
+				if( ! is_array($v) && ! $v instanceof \Countable)
+				{
+					throw new \Exception( "Input to this filter must be an array or a Countable object." );
+				}
+				
+				return count($v);
+			},
 			'group_by_3' => function ($array)
 			{
 				$r = [];

@@ -34,7 +34,9 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 		{
 			foreach( $varToLoop as $k => $v )
 			{
-				if( $this->_matches['as2'] )
+				$bindings = [];
+				
+				if( isset( $this->_matches['as2'] ) )
 				{
 					$kName = $this->_matches['as1'];
 					$vName = $this->_matches['as2'];
@@ -44,7 +46,7 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 						$vName => $v,
 					];
 				}
-				else
+				elseif( isset( $this->_matches['as1'] ) )
 				{
 					$vName = $this->_matches['as1'];
 					
@@ -52,9 +54,15 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 						$vName => $v,
 					];
 				}
+				else
+				{
+					goto render;
+				}
 				
 				$this->_context->setBindings( $bindings );
 	
+				render:
+				
 				$render .= $this->_context->render();
 			}
 		}

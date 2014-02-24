@@ -14,12 +14,16 @@ class CommandTokenFactory
 	{
 		$types = [];
 		$expressions = [];
-		$expressions['variable'] = '\w+(?:[.|]\w+)*';
+		
+		$expressions['variable'] = '(?:\w+(?:[.|]\w+)*)';
 		
 		$types['Set'] = 'set  (?<var>%variable%)  as  (?<as>\w+)';
 		
 		$types['ForLoop'] = 'for  (?<var>%variable%)(?:  as  (?<as1>\w+) ( , (?<as2>\w+))?)?';
 		$types['EndForLoop'] = 'endfor(?:  (?<var>%variable%))?';
+		
+		$types['WhileLoop'] = 'while  (?<var>%variable%)(?:  as  (?<as1>\w+))?';
+		$types['EndWhileLoop'] = 'endwhile(?:  (?<var>%variable%))?';
 		
 		$types['IfToken'] = 'if  (?<var>%variable%)';
 		$types['ElseIfToken'] = 'elseif  (?<var>%variable%)';
@@ -32,7 +36,7 @@ class CommandTokenFactory
 		$types['Comment'] = '#.*#';
 		$types['CommentOpen'] = '#.*';
 		$types['CommentClose'] = '.*#';
-		
+
 		foreach( $types as &$t )
 		{
 			$t = preg_replace( '/  /', '\s+', $t);
@@ -48,7 +52,7 @@ class CommandTokenFactory
 				return $expressions[$v[1]];
 			}, $t);
 		}
-		
+
 		$this->_tokenTypes = $types;
 	}
 	
@@ -83,7 +87,7 @@ class CommandTokenFactory
 		
 		if( ! $ok )
 		{
-			throw new \Exception( "No type was matched for Command Token `$token`." );
+			throw new \Exception( "No token type was matched for Command Token `$token`." );
 		}
 
 		$class = __namespace__ . '\CommandTokens\\' . $type;

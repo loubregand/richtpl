@@ -15,9 +15,14 @@ class Engine
 	
 	protected $_commandTokenFactory;
 	
-	public function __construct()
+	public function __construct($tpl = null)
 	{
 		$this->_commandTokenFactory = new CommandTokenFactory();
+		
+		if( null !== $tpl )
+		{
+			$this->setTemplate($tpl);
+		}
 	}
 	
 	public function setTemplate($par)
@@ -80,20 +85,32 @@ class Engine
 		return $this;
 	}
 	
-	public function render()
+	public function render(Context $parentContext = null)
 	{
 		if( null === $this->_template )
 		{
 			throw new \Exception( "Template was not set." );
 		}
 		
-		if( null === $this->_tokens )
-		{
+		/**
+		* @TODO tokens are consumed so to optimize, must implement the caching of the parsed token tree insted of the plain tokenStack
+		*/
+		// if( null === $this->_tokens )
+		// {
 			$this->parseTemplate();
-		}
+		// }
 		
 		$context = ( new Context() )->setBindings($this->_bindings);
 		
+		if( null !== $parentContext )
+		{
+			$context->setParent( $parentContext );
+		}
+		
+		/**
+		* @TODO move the prepare phase to parseTemplate method in order to optimize multiple renderings of the same template
+		* Pass the upper context to the globalToken only in the exec() call
+		*/
 		$this->_render = (new CommandTokens\GlobalToken() )
 			->prepare( $this->_tokens, $context )
 			->exec()
