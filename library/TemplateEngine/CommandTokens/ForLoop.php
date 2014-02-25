@@ -15,6 +15,14 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 		$varName = $this->_matches['var'];
 		$varToLoop = $this->_context->getBind($varName);
 		
+		/**
+		* @TODO usare un generatore per grandi numeri
+		*/
+		if( is_int( $varToLoop ) )
+		{
+			$varToLoop = range(1, $varToLoop);
+		}
+		
 		if( 
 			(
 				! is_array( $varToLoop ) 
@@ -32,8 +40,10 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 		}
 		else
 		{
+			$n = 0;
 			foreach( $varToLoop as $k => $v )
 			{
+				++$n;
 				$bindings = [];
 				
 				if( isset( $this->_matches['as2'] ) )
@@ -64,6 +74,11 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 				render:
 				
 				$render .= $this->_context->render();
+			}
+			
+			if( ! $n && $this->_elseContext )
+			{
+				$render = $this->_elseContext->render();
 			}
 		}
 		

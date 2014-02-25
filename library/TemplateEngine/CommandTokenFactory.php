@@ -25,7 +25,7 @@ class CommandTokenFactory
 		$types['WhileLoop'] = 'while  (?<var>%variable%)(?:  as  (?<as1>\w+))?';
 		$types['EndWhileLoop'] = 'endwhile(?:  (?<var>%variable%))?';
 		
-		$types['IfToken'] = 'if  (?<var>%variable%)';
+		$types['IfToken'] = 'if  (?<var>%variable%)(?:  as  (?<as1>\w+))?';
 		$types['ElseIfToken'] = 'elseif  (?<var>%variable%)';
 		$types['EndIfToken'] = 'endif(?:  (?<var>%variable%))?';
 	

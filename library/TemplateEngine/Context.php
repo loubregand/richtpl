@@ -54,6 +54,11 @@ class Context
 	{
 		$askedFor = $k;
 		
+		if( preg_match( '/^\d+$/', $k ) )
+		{
+			return (int)$k;
+		}
+		
 		$pipes = explode('|', $k);
 		
 		$val = $this->getBindVar(array_shift($pipes));

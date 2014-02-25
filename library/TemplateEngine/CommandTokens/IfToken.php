@@ -17,18 +17,35 @@ class IfToken extends AbstractContextOpenerCommandTokens
 		$varName = $this->_matches['var'];
 		$context = $this->_context;
 		
-		if( $this->_checker( $context->getBind($varName) ) )
+		if( $this->_checker( $v = $context->getBind($varName) ) )
 		{
+			if( isset( $this->_matches['as1'] ) )
+			{
+				$vName = $this->_matches['as1'];
+				
+				$this->_context->setBind( $vName, $v );
+			}
+			
 			$render = $context->render();
 			
 			goto end;
 		}
 		elseif( $this->_elseIfContext )
 		{
+			/**
+			* @TODO registrare gli as1 dei vari elseif se presenti
+			*/
 			foreach( $this->_elseIfContext as $varName => $context )
 			{
-				if( $this->_checker( $context->getBind($varName) ) )
+				if( $this->_checker( $v = $context->getBind($varName) ) )
 				{
+					if( isset( $this->_matches['as1'] ) )
+					{
+						$vName = $this->_matches['as1'];
+						
+						$this->_context->setBind( $vName, $v );
+					}
+					
 					$render = $context->render();
 					
 					goto end;

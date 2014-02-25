@@ -131,6 +131,7 @@ try
 				'date_of_publication' => '2013-01-09T00:00:01',
 			],
 		],
+		'colors' => ['lightgrey', 'transparent'],
 		'numbers' => range(1,3),
 		// 'rows' => [],
 		'number_of_books' => 20,
@@ -156,7 +157,7 @@ try
 			'range' => new \Utils\Range(),
 			'iterate' => function ($v)
 			{
-				return new \Utils\TemplateIterator($v);
+				return new \Utils\ManualIterator($v);
 			},
 			'keys' => function ($v)
 			{
