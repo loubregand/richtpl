@@ -29,11 +29,11 @@ Added numeric literals: a variable name that consists only of numbers is not loo
 
 Added `for' semantics to use numeric literals as a shortcut to execute a loop a defined number of times.
 
-IMPLEMENTED TOKENS
+IMPLEMENTED TAGS
 
 {for variable[ as key_variable_name[,variable_name]]}{else[ variable]}{endfor[ variable]}
 
-{if variable[ as variable_name]}{elseif variable}{else[ variable]}{endif[ variable]}
+{if variable[ as variable_name]}{elseif variable[ as variable_name]}{else[ variable]}{endif[ variable]}
 
 {set variable as variable_name}
 
@@ -54,13 +54,13 @@ coming soon
 
 HELPERS
 
-Helpers are a huge part of the template mechanism. By demanding functionalities to helpers we are able to keep the template core to a minimum, so we have less bugs, it is easier to add functionalities, and everybody is happy. So, what are helpers? basically, they are variables that resolve to callables. They can be inserted after a variable by postponing the variable with a pipe character `|', es:
+Helpers are a huge part of the template mechanism. By demanding functionalities to helpers we are able to keep the template core to a minimum, so we have less bugs, it is easier to add functionalities, and everybody is happier. So, what are helpers? basically, they are variables that resolve to callables. They can be inserted after a variable by postponing the variable with a pipe character `|', es:
 
 {= var_with_an_array|array.count}
 
 will output the number of elements in the var_with_an_array array.
 
-Of particular interest is the array.iterate helper: it creates a new object of type \Utils\ManualIterator. This object can be used inside for loops like this:
+The array.iterate helper is particularly interesting: it creates a new object of type \Utils\ManualIterator. This object can be used inside for loops like this:
 
 {for rows|array.iterate as ar}
 	{= ar.fwd.key}: {= ar.value}
@@ -82,7 +82,7 @@ white
 grey
 white
 
-Note that the set tag must be outside the for loop or the variable cols would be reinitialized at every loop, resulting in four `grey' rows.
+Note that the {set} tag must be outside the for loop or the variable cols would be reinitialized at every loop, resulting in four `grey' rows.
 
 TODOS
 
@@ -92,15 +92,27 @@ TODOS
 
 - automatic escaping of variables
 
-- ability to change default token delimiters { and }
+- ability to change default tag delimiters { and }
 
-- default (and method to allow override) escape sequence for inserting literal token delimiters
+- default (and method to allow override) escape sequence for inserting literal tag delimiters
 
 - pass the context to the callables (closures and class methods, not to the function calls) to allow setting of context variables from helper methods
 
 - caching through serialization of parsed syntax trees
 
 - generator for big numbers in automatic `for' integer loops.
+
+- {filter} tag
+
+- {=var} escaped by default {=!var} not escaped
+
+- rendering of partials: autoescape disabled by default (allow forcing it? maybe using a filter)
+
+- partials with filters applyed: they will not be rendered before filter application! must implement partial rendering at context level (with the context passing itself to the partial), but then how to inform the variable token that a partial has been rendered and thus it shouldn't escape the result?
+
+- {unescape}{endunescape} to disable escaping for a section
+
+- {ifvar} tag (semantic: {ifvar var_name}section executed if var_name is false (if is true the variable value is printed.{endifvar} (Need escape/unescape semantic, can be very confusing)
 
 - UNIT TESTS
 

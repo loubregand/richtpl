@@ -136,6 +136,8 @@ try
 		// 'rows' => [],
 		'number_of_books' => 20,
 		'hasPrevious' => 0,
+		'noMoreBooksText' => "Oh no, no more books!",
+		'noMoreBooks' => new \TemplateEngine\Engine('<div style="text-align: center; color: red;">{=noMoreBooksText}</div>'),
 		'prevLink' => 'http://next/page',
 		'hasNext'     => 1,
 		'nextLink' => 'http://next/page',

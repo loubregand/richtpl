@@ -10,23 +10,22 @@ class IfToken extends AbstractContextOpenerCommandTokens
 {
 	protected $_elseIfContext = [];
 	
-	public function exec()
+	public function exec(\TemplateEngine\Context $parentContext)
 	{
 		$render = "";
 		
 		$varName = $this->_matches['var'];
-		$context = $this->_context;
 		
-		if( $this->_checker( $v = $context->getBind($varName) ) )
+		if( $this->_checker( $v = $parentContext->getBind($varName) ) )
 		{
 			if( isset( $this->_matches['as1'] ) )
 			{
 				$vName = $this->_matches['as1'];
 				
-				$this->_context->setBind( $vName, $v );
+				$this->_context->setBindings([ $vName => $v ]);
 			}
 			
-			$render = $context->render();
+			$render = $this->_context->render();
 			
 			goto end;
 		}
@@ -35,18 +34,19 @@ class IfToken extends AbstractContextOpenerCommandTokens
 			/**
 			* @TODO registrare gli as1 dei vari elseif se presenti
 			*/
-			foreach( $this->_elseIfContext as $varName => $context )
+			foreach( $this->_elseIfContext as $varName => $par )
 			{
-				if( $this->_checker( $v = $context->getBind($varName) ) )
+				$elseIfContext = $par['context'];
+				$vName = $par['as1'];
+				
+				if( $this->_checker( $v = $parentContext->getBind($varName) ) )
 				{
-					if( isset( $this->_matches['as1'] ) )
+					if( null !== $vName )
 					{
-						$vName = $this->_matches['as1'];
-						
-						$this->_context->setBind( $vName, $v );
+						$elseIfContext->setBindings([ $vName => $v ]);
 					}
 					
-					$render = $context->render();
+					$render = $elseIfContext->render();
 					
 					goto end;
 				}
@@ -83,7 +83,10 @@ class IfToken extends AbstractContextOpenerCommandTokens
 	{
 		if( $token instanceof ElseIfToken )
 		{
-			$this->_elseIfContext[$token->exec($this)] = $context = new \TemplateEngine\Context();
+			$this->_elseIfContext[$token->exec($this)] = [
+				'context' => $context = new \TemplateEngine\Context(),
+				'as1'     => $token->getMatches()['as1'],
+			];
 			
 			return $context;
 		}
