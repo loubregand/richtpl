@@ -110,9 +110,13 @@ TODOS
 
 - partials with filters applyed: they will not be rendered before filter application! must implement partial rendering at context level (with the context passing itself to the partial), but then how to inform the variable token that a partial has been rendered and thus it shouldn't escape the result?
 
+- iterator should be able to tell if an element is the last one
+
+- update automatic iterator with methods from manual interator (ie isFirst, isLast)
+
 - {unescape}{endunescape} to disable escaping for a section
 
-- {ifvar} tag (semantic: {ifvar var_name}section executed if var_name is false (if is true the variable value is printed.{endifvar} (Need escape/unescape semantic, can be very confusing)
+-?- {ifvar} tag (semantic: {ifvar var_name}section executed if var_name is false (if is true the variable value is printed.{endifvar} (Need escape/unescape semantic, can be very confusing)
 
 - UNIT TESTS
 
