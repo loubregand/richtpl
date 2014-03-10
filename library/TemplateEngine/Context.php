@@ -38,8 +38,10 @@ class Context
 		return $this;
 	}
 	
-	public function render()
+	public function render(array $bindings = array())
 	{
+		$this->setBindings( $bindings );
+		
 		$render = '';
 		
 		foreach( $this->_tokens as $token )

@@ -44,7 +44,7 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 			foreach( $varToLoop as $k => $v )
 			{
 				++$n;
-				$bindings = [];
+				$bindings = array();
 				
 				if( isset( $this->_matches['as2'] ) )
 				{
@@ -69,11 +69,9 @@ class ForLoop extends AbstractContextOpenerCommandTokens
 					goto render;
 				}
 				
-				$this->_context->setBindings( $bindings );
-	
 				render:
 				
-				$render .= $this->_context->render();
+				$render .= $this->_context->render($bindings);
 			}
 			
 			if( ! $n && $this->_elseContext )

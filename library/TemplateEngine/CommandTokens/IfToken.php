@@ -18,14 +18,16 @@ class IfToken extends AbstractContextOpenerCommandTokens
 		
 		if( $this->_checker( $v = $parentContext->getBind($varName) ) )
 		{
+			$bindings = array();
+			
 			if( isset( $this->_matches['as1'] ) )
 			{
 				$vName = $this->_matches['as1'];
 				
-				$this->_context->setBindings([ $vName => $v ]);
+				$bindings[$vName] = $v;
 			}
 			
-			$render = $this->_context->render();
+			$render = $this->_context->render($bindings);
 			
 			goto end;
 		}
@@ -41,12 +43,14 @@ class IfToken extends AbstractContextOpenerCommandTokens
 				
 				if( $this->_checker( $v = $parentContext->getBind($varName) ) )
 				{
+					$bindings = array();
+					
 					if( null !== $vName )
 					{
-						$elseIfContext->setBindings([ $vName => $v ]);
+						$bindings[$vName] = $v;
 					}
 					
-					$render = $elseIfContext->render();
+					$render = $elseIfContext->render($bindings);
 					
 					goto end;
 				}

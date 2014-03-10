@@ -20,16 +20,16 @@ class WhileLoop extends AbstractContextOpenerCommandTokens
 		{
 			do
 			{
+				$bindings = array();
+				
 				if( $this->_matches['as1'] )
 				{
 					$vName = $this->_matches['as1'];
 					
-					$this->_context->setBindings([
-						$vName => $val,
-					]);
+					$bindings[$vName] = $val;
 				}
 	
-				$render .= $this->_context->render();
+				$render .= $this->_context->render($bindings);
 			}
 			while( $this->_checker( $val = $this->_context->getBind($varName) ) );
 		}
