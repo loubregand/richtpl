@@ -35,6 +35,9 @@ IMPLEMENTED TAGS
 
 {if variable[ as variable_name]}{elseif variable[ as variable_name]}{else[ variable]}{endif[ variable]}
 
+implemented not in IF tag (if! or if ! and elseif! and elseif !)
+{if ! variable[ as variable_name]}{elseif ! variable[ as variable_name]}{else[ variable]}{endif[ variable]}
+
 {set variable as variable_name}
 
 {while variable[ as variable_name]}{endwhile[ variable]}
@@ -114,8 +117,6 @@ TODOS
 
 - update automatic iterator with methods from manual interator (ie isFirst, isLast)
 
-- add ifnot tag
-
 - change the way token are specialized: on request at lexing stage instead of everything at tokenizing stage. This way it could be possibile to allow a token to ecape every subsequent token till a closing token (to define a non-processing area) -> is this not similar to range comments? YES, so without this change syntax errors in tokens would cause the rendering to fail even if the tags are commented out.
 Solution: to substitute the tokenization with an ad-hoc one customizable by the current node (this way it could be possible for a tag to declare new delimiters inside his context).
 For this to work tokenization of the next token should be performed on-demand by a class that is context-sensitive, ideally the context itself.
@@ -123,7 +124,5 @@ For this to work tokenization of the next token should be performed on-demand by
 - {unescape}{endunescape} to disable automatic escaping for the {= var} tag inside a context
 
 -?- {ifvar} tag (semantic: {ifvar var_name}section executed if var_name is false (if is true the variable value is printed.{endifvar} (Need escape/unescape semantic, can be very confusing)
-
-- UNIT TESTS
 
 - ??? callables argument(s)?
