@@ -7,10 +7,6 @@ set_include_path($path);
 
 spl_autoload_extensions(".php");
 
-// Il meccanismo di default non funziona con nomi di classi contenenti maiuscole
-// spl_autoload_register();
-
-// Meccanismo alternativo in attesa del bugfix di php
 spl_autoload_register(
 	function ($className)
 	{

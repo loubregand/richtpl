@@ -16,7 +16,14 @@ class IfToken extends AbstractContextOpenerCommandTokens
 		
 		$varName = $this->_matches['var'];
 		
-		if( $this->_checker( $v = $parentContext->getBind($varName) ) )
+		$bool = $this->_checker( $v = $parentContext->getBind($varName) );
+		
+		if( $this->_matches['not'] )
+		{
+			$bool = ! $bool;
+		}
+		
+		if( $bool )
 		{
 			$bindings = array();
 			
@@ -41,7 +48,14 @@ class IfToken extends AbstractContextOpenerCommandTokens
 				$elseIfContext = $par['context'];
 				$vName = $par['as1'];
 				
-				if( $this->_checker( $v = $parentContext->getBind($varName) ) )
+				$bool = $this->_checker( $v = $parentContext->getBind($varName) );
+				
+				if( $par['not'] )
+				{
+					$bool = ! $bool;
+				}
+				
+				if( $bool )
 				{
 					$bindings = array();
 					
@@ -90,6 +104,7 @@ class IfToken extends AbstractContextOpenerCommandTokens
 			$this->_elseIfContext[$token->exec($this)] = [
 				'context' => $context = new \TemplateEngine\Context(),
 				'as1'     => $token->getMatches()['as1'],
+				'not'     => $token->getMatches()['not'],
 			];
 			
 			return $context;
